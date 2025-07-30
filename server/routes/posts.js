@@ -19,11 +19,22 @@ const getUserId = header => {
 router.get('/', async (req, res) => {
   const userId = getUserId(req.headers.authorization);
   const filter = userId
-    ? { author: userId }
-    : { status: 'published' };      // only published for public
+  ? { $or: [{ status: 'published' }, { author: userId }] }
+  : { status: 'published' };     // only published for public
   const posts = await Post.find(filter)
     .populate('author', 'name email');
   res.json(posts);
+});
+
+// Add this route for getting a single post and incrementing views
+router.get('/:id', async (req, res) => {
+  const post = await Post.findByIdAndUpdate(
+    req.params.id,
+    { $inc: { views: 1 } },
+    { new: true }
+  ).populate('author', 'name email').populate('comments.author', 'name email');
+  if (!post) return res.status(404).json({ error: 'Not found' });
+  res.json(post);
 });
 
 // Auth middleware
@@ -46,6 +57,16 @@ router.post('/', requireAuth, async (req, res) => {
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
+});
+
+// Add this route for adding a comment
+router.post('/:id/comments', requireAuth, async (req, res) => {
+  const post = await Post.findById(req.params.id);
+  if (!post) return res.status(404).json({ error: 'Not found' });
+  post.comments.push({ text: req.body.text, author: req.userId });
+  await post.save();
+  await post.populate('comments.author', 'name email');
+  res.json(post.comments);
 });
 
 // UPDATE

@@ -1,4 +1,3 @@
-// client/src/pages/Home.js
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
@@ -70,6 +69,14 @@ export default function Home() {
               <p style={{ color: '#555', flexGrow: 1 }}>
                 {p.content.length > 100 ? p.content.slice(0,100) + '…' : p.content}
               </p>
+              <div style={{ fontSize: '0.95rem', color: '#888', marginBottom: '0.5rem', display: 'flex', gap: '1.5rem' }}>
+                <span>
+                  <b>Views:</b> {p.views ?? 0}
+                </span>
+                <span>
+                  <b>Comments:</b> {p.comments ? p.comments.length : 0}
+                </span>
+              </div>
               <div style={{ marginTop: '1rem', display: 'flex', gap: '0.5rem' }}>
                 <Link
                   to={`/post/${p._id}`}

@@ -7,7 +7,7 @@ export default function Signin() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
-  const handleSubmit = async e => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
       const { data } = await axios.post('http://localhost:5001/api/auth/signin', { email, password });
