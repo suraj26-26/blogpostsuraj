@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Link } from 'react-router-dom'
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL;
 
 export default function Home() {
   const [posts, setPosts] = useState([])
@@ -8,7 +9,7 @@ export default function Home() {
 
   useEffect(() => {
     axios
-      .get('http://localhost:5001/api/posts', {
+      .get(`${API_BASE_URL}/api/posts`, {
         headers: token ? { Authorization: `Bearer ${token}` } : {}
       })
       .then(res => setPosts(res.data))
@@ -17,10 +18,11 @@ export default function Home() {
 
   const handleDelete = async id => {
     if (!window.confirm('Delete this post?')) return
-    await axios.delete(`http://localhost:5001/api/posts/${id}`, {
+    await axios.delete(`${API_BASE_URL}/api/posts/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    setPosts(p => p.filter(x => x._id !== id))
+    setPosts(prev => prev.filter(p => p._id !== id))
+
   }
 
   return (
@@ -59,7 +61,7 @@ export default function Home() {
           >
             {p.imagePath && (
               <img
-                src={`http://localhost:5001/uploads/${p.imagePath}`}
+                src={`${API_BASE_URL}/uploads/${p.imagePath}`}
                 alt={p.title}
                 style={{ width: '100%', height: 180, objectFit: 'cover' }}
               />
