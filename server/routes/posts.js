@@ -45,6 +45,21 @@ const requireAuth = (req, res, next) => {
   next();
 };
 
+//like 
+router.post('/:id/like', requireAuth, async (req, res) => {
+  const userId = req.userId;
+  const post = await Post.findById(req.params.id);
+  if (!post) return res.status(404).json({ error: 'Not found' });
+
+  if (post.likedBy.includes(userId)) {
+    return res.status(400).json({ error: 'You already liked this post.' });
+  }
+
+  post.likes += 1;
+  post.likedBy.push(userId);
+  await post.save();
+  res.json({ likes: post.likes });
+});
 // CREATE
 router.post('/', requireAuth, async (req, res) => {
   try {

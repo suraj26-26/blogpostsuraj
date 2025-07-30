@@ -12,6 +12,8 @@ const postSchema = new mongoose.Schema({
   category:  { type: String, required: true },
   status:    { type: String, enum: ['draft','published'], default: 'draft' },
   views:     { type: Number, default: 0 },
+  likes: { type: Number, default: 0 },
+  likedBy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   imagePath: { type: String },
   author:    { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
   comments:  [commentSchema]
