@@ -21,7 +21,8 @@ export default function Home() {
     await axios.delete(`${API_BASE_URL}/api/posts/${id}`, {
       headers: { Authorization: `Bearer ${token}` }
     })
-    setPosts(p => p.filter(x => x._id !== id))
+    setPosts(prev => prev.filter(p => p._id !== id))
+
   }
 
   return (
