@@ -6,6 +6,9 @@ server/node_modules
 /.pnp
 .pnp.js
 
+# dotenv
+.env
+
 # testing
 /coverage
 
