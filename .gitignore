@@ -8,13 +8,7 @@ server/node_modules
 
 # dotenv
 client/.env
-client/.env.*
-
 server/.env
-server/.env.*
-
-.env
-.env.*
 
 # testing
 /coverage

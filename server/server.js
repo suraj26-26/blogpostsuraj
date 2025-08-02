@@ -7,7 +7,9 @@ const path     = require('path');
 require('dotenv').config();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin : "https://blogpostsuraj.vercel.app/"
+}));
 app.use(express.json());
 // 1️⃣ Ensure the uploads directory exists
 const uploadDir = path.join(__dirname, 'public', 'uploads');
